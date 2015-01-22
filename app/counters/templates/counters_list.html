@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#counters_table').DataTable({
+      "sDom": 'T<"clearfix">lfrtip',
+      "oTableTools": {
+        "sSwfPath": "static/copy_csv_xls_pdf.swf",
+        "aButtons": [ "copy", "print",
+          {
+            "sExtends": "csv",
+            "sFileName": "coresqalate_social_counters.csv",
+          },
+          {
+            "sExtends": "xls",
+            "sFileName": "coresqalate_social_counters.xls",
+            "bFooter": false
+          },
+          {
+            "sExtends": "pdf",
+            "sFileName": "coresqalate_social_counters.pdf"
+          }
+        ]
+      },
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+      "aoColumnDefs": [{
+        "bSortable": false,
+        "aTargets": [0] // disable sort on 2nd column of the table
+      }],
+      // since the list is already sorted descending by timestamp
+      // don't let datatables resort it ascending, but
+      // still allow the user to sort by columns:
+      "aaSorting" : []
+    });
+  });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('[data-toggle="confirmation"]').confirmation({
+      title:  "WARNING:<br><br>" +
+              "Gathering social counts involves interacting with several API endpoints which may take some time.<br><br>" +
+              "Usually gathering is much better performed as a schedule background job." +
+              "<br><br><br>Are you sure?",
+      singleton: true,
+      popout: true,
+      placement: 'right'
+    });
+  });
+</script>
+
+<div class="page-header">
+  <h3 class="pull-left">Social counters</h3>
+  <div class="clearfix"></div>
+</div>
+<table id="counters_table" class="display table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>name</th>
+      <th>runnable</th>
+      <th>spreadsheet</th>
+      <th>updated at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in counters %}
+      <tr>
+        <td>
+          <a href="/counters_summary?id={{c.id}}" class="btn btn-xs btn-success" title="view counts">results</a>
+          <a data-toggle="confirmation" data-href="/count_now?id={{c.id}}" class="btn btn-xs btn-danger">gather</a>
+        </td>
+        <td>
+          <a href="/counters_update?id={{c.id}}">{{c.name}}</a>
+        </td>
+        <td>{{c.runnable}}</td>
+        <td><a href="{{c.gspread_link}}" target="_blank">view</a></td>
+        <td>{{c.updated_at}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

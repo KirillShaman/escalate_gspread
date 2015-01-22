@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>Escalate</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="static/favicon.ico" rel="shortcut icon" type="image/x-icon">
+<link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="static/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+<script src="static/jquery-1.11.1.min.js" type="text/javascript" language="javascript"></script>
+<script src="static/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script src="static/jquery.dataTables.min.js" type="text/javascript" language="javascript"></script>
+</head>
+<body style="padding-bottom:75px;">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="javascript:void(0)">Escalate</a>
+    </div>
+    <div class="row">
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="javascript:void(0)"><s>Import</s></a>
+          </li>
+          <li>
+            <a href="/summary" id="menu_summary_link" style="display:none;">Summary</a>
+            <a href="javascript:void(0)" id="menu_importing_link"><em style="color:white;">standby Import in progress...</em></a>
+          </li>
+          <li><a href="javascript:void(0)"><s>New</s></a></li>
+          <li><a href="javascript:void(0)"><s>Review</s></a></li>
+          <li><a href="javascript:void(0)"><s>Export</s></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="margin-right:10px;">
+          <li><a href="javascript:void(0)">{{current_user.username}}</a></li>
+          <li><a href="javascript:void(0)"><s>Logout</s></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  {% if error %}
+    <div class="alert alert-danger alert-dismissable" style="margin-top:10px;">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p class="error"><strong>Error:</strong> {{ error }}</p>
+    </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

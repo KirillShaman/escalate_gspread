@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#crawlers_table').DataTable({
+      "sDom": 'T<"clearfix">lfrtip',
+      "oTableTools": {
+        "sSwfPath": "static/copy_csv_xls_pdf.swf",
+        "aButtons": [ "copy", "print",
+          {
+            "sExtends": "csv",
+            "sFileName": "escalate_crawler_results.csv",
+          },
+          {
+            "sExtends": "xls",
+            "sFileName": "escalate_crawler_results.xls",
+            "bFooter": false
+          },
+          {
+            "sExtends": "pdf",
+            "sFileName": "escalate_crawler_results.pdf"
+          }
+        ]
+      },
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+      // since the list is already sorted descending by timestamp
+      // don't let datatables resort it ascending, but
+      // still allow the user to sort by columns:
+      "aaSorting" : []
+    });
+  });
+</script>
+
+<div class="page-header">
+  <h3 class="pull-left">Crawler results</h3>
+  <div class="clearfix"></div>
+</div>
+<table id="crawlers_table" class="display table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th colspan="5" style="text-align:left">&nbsp;</th>
+      <th colspan="5" style="text-align:center">Facebook</th>
+    </tr>
+    <tr>
+      <th style="text-align:left">timestamp</th>
+      <th style="text-align:left">page url</th>
+      <th style="text-align:left">&nbsp;</th>
+      <th style="text-align:right">tweets</th>
+      <th style="text-align:right">google +1's</th>
+      <th style="text-align:right">total</th>
+      <th style="text-align:right">shares</th>
+      <th style="text-align:right">likes</th>
+      <th style="text-align:right">comments</th>
+      <th style="text-align:right">clicks</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for page in pages %}
+      <tr>
+        <td style="text-align:left; width:12%">{{page.timestamp}}</td>
+        <td style="text-align:left">
+          <a href="{{page.url}}" target="_blank">{{page.url}}</a>
+        </td>
+        <td style="text-align:left">
+          <a href="/crawled_summary?id={{page.id}}">details</a>
+        </td>
+        <td style="text-align:right">{{page.tweets | format_number}}</td>
+        <td style="text-align:right">{{page.google_plusses | format_number}}</td>
+        <td style="text-align:right">{{page.fb_total | format_number}}</td>
+        <td style="text-align:right">{{page.fb_shares | format_number}}</td>
+        <td style="text-align:right">{{page.fb_likes | format_number}}</td>
+        <td style="text-align:right">{{page.fb_comments | format_number}}</td>
+        <td style="text-align:right">{{page.fb_clicks | format_number}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

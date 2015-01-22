@@ -1,0 +1,15 @@
+*.pyc
+*.db
+coverage
+venv
+.DS_Store
+__cls.txt
+tm
+up
+ips
+config.py
+/testing/gspread_test.py
+/testing
+/testing_db
+peewee.db
+seo.db

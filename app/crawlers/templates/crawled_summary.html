@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3 class="pull-left">Crawled page summary</h3>
+  <div class="clearfix"></div>
+</div>
+
+<h3>{{page.url}}</h3>
+<div class="well">
+  <ul>
+    <li>title tag: {{page.title_tag}}</li>
+    <li>meta description: {{page.meta_description}}</li>
+    <li>meta keywords: {{page.meta_keywords}}</li>
+    <li>warnings:
+      <ul>
+        {% for warning in page.warnings.split(',') %}
+          <li>{{warning}}</li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+</div>
+<h4>top words by frequency</h4>
+<div class="well">
+  {% for word in words %}
+    {{word[0]}} = {{word[1]}}<br />
+  {% endfor %}
+</div>
+<h4>extracted plain text &nbsp;&nbsp;<small>(includes title and h1 tags)</small></h4>
+<div class="well">
+  <pre>{{page.plain_text}}</pre>
+</div>
+
+{% endblock %}

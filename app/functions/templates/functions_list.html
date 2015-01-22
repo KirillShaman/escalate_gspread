@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#functions_table').DataTable({
+      "sDom": 'T<"clearfix">lfrtip',
+      "oTableTools": {
+        "sSwfPath": "static/copy_csv_xls_pdf.swf",
+        "aButtons": [ "copy", "print",
+          {
+            "sExtends": "csv",
+            "sFileName": "escalate_user_functions.csv",
+          },
+          {
+            "sExtends": "xls",
+            "sFileName": "escalate_user_functions.xls",
+            "bFooter": false
+          },
+          {
+            "sExtends": "pdf",
+            "sFileName": "escalate_user_functions.pdf"
+          }
+        ]
+      },
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+      "aoColumnDefs": [{
+        "bSortable": false,
+        "aTargets": [0] // disable sort on 2nd column of the table
+      }],
+      // since the list is already sorted descending by timestamp
+      // don't let datatables resort it ascending, but
+      // still allow the user to sort by columns:
+      "aaSorting" : []
+    });
+  });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('[data-toggle="confirmation"]').confirmation({
+      title:  "WARNING:<br><br>" +
+              "Depending on what your function does this may take some time to run.<br><br>" +
+              "User functions are probably better utilized as scheduled background jobs." +
+              "<br><br><br>Are you sure?",
+      singleton: true,
+      popout: true,
+      placement: 'right'
+    });
+  });
+</script>
+
+<div class="page-header">
+  <h3 class="pull-left">User functions</h3>
+  <div class="clearfix"></div>
+</div>
+<table id="functions_table" class="display table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>name</th>
+      <th>runnable</th>
+      <th>user function</th>
+      <th>spreadsheet</th>
+      <th>updated at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for f in funcs %}
+      <tr>
+        <td>
+          <a href="/functions_summary?id={{f.id}}" class="btn btn-xs btn-success" title="view results">results</a>
+          <a href="/functions_summary?e=e&amp;id={{f.id}}" class="btn btn-xs btn-info" title="view errors">errors</a>
+          <a data-toggle="confirmation" data-href="/run_function?id={{f.id}}" class="btn btn-xs btn-danger">run</a>
+        </td>
+        <td>
+          <a href="/functions_update?id={{f.id}}">{{f.name}}</a>
+        </td>
+        <td>{{f.runnable}}</td>
+        <td>{{f.function}}</td>
+        <td><a href="{{f.gspread_link}}" target="_blank">view</a></td>
+        <td>{{f.updated_at}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

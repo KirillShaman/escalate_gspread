@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#crawlers_table').DataTable({
+      "sDom": 'T<"clearfix">lfrtip',
+      "oTableTools": {
+        "sSwfPath": "static/copy_csv_xls_pdf.swf",
+        "aButtons": [ "copy", "print",
+          {
+            "sExtends": "csv",
+            "sFileName": "escalate_crawlers.csv",
+          },
+          {
+            "sExtends": "xls",
+            "sFileName": "escalate_crawlers.xls",
+            "bFooter": false
+          },
+          {
+            "sExtends": "pdf",
+            "sFileName": "escalate_crawlers.pdf"
+          }
+        ]
+      },
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+      "aoColumnDefs": [{
+        "bSortable": false,
+        "aTargets": [0] // disable sort on 1st column of the table
+      }],
+      // since the list is already sorted descending by timestamp
+      // don't let datatables resort it ascending, but
+      // still allow the user to sort by columns:
+      "aaSorting" : []
+    });
+  });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('[data-toggle="confirmation"]').confirmation({
+      title:  "WARNING:<br><br>" +
+              "This may take a long time when crawling a web site with lots of pages.<br><br>" +
+              "Usually crawling is much better performed as a schedule background job." +
+              "<br><br><br>Are you sure?",
+      singleton: true,
+      popout: true,
+      placement: 'right'
+    });
+  });
+</script>
+
+<div class="page-header">
+  <h3 class="pull-left">Crawlers</h3>
+  <div class="clearfix"></div>
+</div>
+<table id="crawlers_table" class="display table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>name</th>
+      <th>runnable</th>
+      <th>spreadsheet</th>
+      <th>status</th>
+      <th>updated at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in crawlers %}
+      <tr>
+        <td style="width:8%">
+          <a href="/crawlers_summary?id={{c.id}}" class="btn btn-xs btn-info" title="view results">view</a>
+          {% if c.crawl_status == 'crawling' %}
+            <a href="javascript:void();" class="btn btn-xs btn-warning" title="crawling">crawling</a>
+          {% else %}
+            <a data-toggle="confirmation" data-href="/crawl_site?id={{c.id}}" class="btn btn-xs btn-danger">crawl now</a>
+          {% endif %}
+        </td>
+        <td>
+          <a href="/crawlers_update?id={{c.id}}">{{c.name}}</a>
+        </td>
+        <td>{{c.runnable}}</td>
+        <td><a href="{{c.gspread_link}}" class="btn btn-xs btn-success" title="view crawled pages" target="_blank">view results in spreadsheet</a></td>
+        <td>{{c.crawl_status}}</td>
+        <td>{{c.updated_at}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

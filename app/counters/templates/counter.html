@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3 class="pull-left">Social counter</h3>
+  <div class="clearfix"></div>
+</div>
+{% if new_counter %}
+  <form action="/counters_create" method="post" class="form-horizontal" role="form">
+{% else %}
+  <form action="/counters_update" method="post" class="form-horizontal" role="form">
+    <input name="id" type="hidden" value="{{id}}" />
+{% endif %}
+  {{ form.csrf_token }}
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">Name</label>
+    <div class="col-sm-10">
+      {{form.name(class="form-control", placeholder="a name is required ... think of this as grouping URL's in a way that's similar to having multiple named spreadsheets")}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Runnable</label>
+    <div class="col-sm-6" style="margin-top:5px;">
+      {{form.runnable(default=form.runnable)}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Link</label>
+    <div class="col-sm-10">
+      {{form.gspread_link(default=form.gspread_link, class="form-control", placeholder="copy/paste the link of a Google Spreadsheet, like: https://docs.google.com/spreadsheet/...")}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">URLs</label>
+    <div class="col-sm-10">
+      {{
+        form.urls(rows=2, cols=80, class_="form-control",
+          placeholder="grab social counts for these url's, which are derived starting from row number 2 in the google spreadsheet, so be sure to enter some urls in that spreadsheet",
+          disabled=disabled
+        )
+      }}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">&nbsp;</label>
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

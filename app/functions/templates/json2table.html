@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3 class="pull-left">User function results shown via json2table</h3>
+  <div class="clearfix"></div>
+</div>
+
+{{tables | safe}}
+
+{% endblock %}

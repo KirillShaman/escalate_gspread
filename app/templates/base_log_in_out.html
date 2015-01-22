@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>Escalate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="static/favicon.ico" type="image/x-icon">
+<link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="static/signin.css" rel="stylesheet" media="screen">
+<script src="static/jquery-1.11.1.min.js" type="text/javascript" language="javascript"></script>
+<script src="static/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+</head>
+<body>
+<div class="container">
+  {% if get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissable" style="margin-top:10px;">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+  <div class="clearfix"></div>
+  {% if error %}
+    <div class="alert alert-danger alert-dismissable" style="margin-top:10px;">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <p class="error"><strong>Error:</strong> {{ error }}</p>
+    </div>
+  {% endif %}
+  <!-- child template: -->
+  {% block content %}{% endblock %}
+</div>
+</body>
+</html>

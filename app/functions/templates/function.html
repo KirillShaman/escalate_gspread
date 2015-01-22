@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3 class="pull-left">User function</h3>
+  <div class="clearfix"></div>
+</div>
+{% if new_function %}
+  <form action="/functions_create" method="post" class="form-horizontal" role="form">
+{% else %}
+  <form action="/functions_update" method="post" class="form-horizontal" role="form">
+    <input name="id" type="hidden" value="{{id}}" />
+{% endif %}
+  {{ form.csrf_token }}
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">Name</label>
+    <div class="col-sm-10">
+      {{form.name(class="form-control", placeholder="a name is required")}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Runnable</label>
+    <div class="col-sm-6" style="margin-top:5px;">
+      {{form.runnable(default=form.runnable)}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Link</label>
+    <div class="col-sm-10">
+      {{form.gspread_link(default=form.gspread_link, class="form-control", placeholder="copy/paste the link of a Google Spreadsheet, like: https://docs.google.com/spreadsheet/...")}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">Function</label>
+    <div class="col-sm-10">
+      {{form.function(rows=8, cols=80, class_="form-control")}}
+    </div>
+  </div>
+<!-- 
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">Arguments</label>
+    <div class="col-sm-10">
+      {{form.params(rows=8, cols=80, class_="form-control")}}
+    </div>
+  </div>
+ -->
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">&nbsp;</label>
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</form>
+<hr />
+<h4>esqalate/app/functions/user_defined_functions.py:</h4>
+<pre>{{ufs}}</pre>
+
+{% endblock %}

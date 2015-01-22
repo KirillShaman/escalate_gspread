@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#counters_table').DataTable({
+      "sDom": 'T<"clearfix">lfrtip',
+      "oTableTools": {
+        "sSwfPath": "static/copy_csv_xls_pdf.swf",
+        "aButtons": [ "copy", "print",
+          {
+            "sExtends": "csv",
+            "sFileName": "escalate_url_counts.csv",
+          },
+          {
+            "sExtends": "xls",
+            "sFileName": "escalate_url_counts.xls",
+            "bFooter": false
+          },
+          {
+            "sExtends": "pdf",
+            "sFileName": "escalate_url_counts.pdf"
+          }
+        ]
+      },
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+      // since the list is already sorted descending by timestamp
+      // don't let datatables resort it ascending, but
+      // still allow the user to sort by columns:
+      "aaSorting" : []
+    });
+  });
+</script>
+
+<div class="page-header">
+  <h3 class="pull-left">Social counts summary</h3>
+  <div class="clearfix"></div>
+</div>
+<!-- <a href="/counters_to_ethercalc?id={{id}}" target="_blank">export to ethercalc</a> -->
+<table id="counters_table" class="display table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th colspan="4" style="text-align:left">&nbsp;</th>
+      <th colspan="5" style="text-align:center">Facebook</th>
+    </tr>
+    <tr>
+      <th style="text-align:left">timestamp</th>
+      <th style="text-align:left">url</th>
+      <th style="text-align:right">tweets</th>
+      <th style="text-align:right">google +1's</th>
+      <th style="text-align:right">total</th>
+      <th style="text-align:right">shares</th>
+      <th style="text-align:right">likes</th>
+      <th style="text-align:right">comments</th>
+      <th style="text-align:right">clicks</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in counters %}
+      <tr>
+        <td style="text-align:left; width:12%">{{c.timestamp}}</td>
+        <td style="text-align:left">
+          <a href="{{c.url}}" target="_blank">{{c.url}}</a>
+        </td>
+        <td style="text-align:right">{{c.tweets | format_number}}</td>
+        <td style="text-align:right">{{c.google_plusses | format_number}}</td>
+        <td style="text-align:right">{{c.fb_total | format_number}}</td>
+        <td style="text-align:right">{{c.fb_shares | format_number}}</td>
+        <td style="text-align:right">{{c.fb_likes | format_number}}</td>
+        <td style="text-align:right">{{c.fb_comments | format_number}}</td>
+        <td style="text-align:right">{{c.fb_clicks | format_number}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

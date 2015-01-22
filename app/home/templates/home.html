@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron">
+  <p class="lead" style="margin-top:-30px;">
+    <h4>Google {{all_title}}</h4>
+    <ol>
+      {% for title in spreadsheet_titles %}
+        <li>{{title}}</li>
+      {% endfor %}
+    </ol>
+    <hr />
+    <h4>Features</h4>
+    <big style="font-size:18px;">
+      <ul>
+        <li>
+          <code>Crawlers</code> to scrape and store web sites with the following data provided for each page crawled:
+          <ul>
+            <li><b>social counts</b>: tweets, g+1's, and all facebook counts</li>
+            <li><b>tag analysis</b>: title tag, meta tags, anchor tags, h1 tags, and warnings about each</li>
+            <li><b>words</b>: remove html, remove stop words, store plain text, word frequencies, and long tail keyword prospecting</li>
+            <li>note: all crawls happen in a background thread, so you may pursue other work while the spider does it's thing</li>
+          </ul>
+        </li>
+        <br />
+        <li>
+          <code>Social counters</code> to store data via API requests for 
+          <a href="javascript:void();" class="btn btn-primary" title="Twitter's tweets"><span style="font-size:16px">t</span>weets</a>
+          <a href="javascript:void();" class="btn btn-danger" title="Google's +1's"><span style="font-size:16px">g</span>+1s</a>
+          <a href="javascript:void();" class="btn btn-info" title="Facebook's counts: total, shares, likes, comments, clicks"><span style="font-size:16px">f</span>shares</a>
+          based on user entered <b>URL</b>s
+        </li>
+        <br />
+        <li><code>YouTube videos</code> to scrape, parse, and store the title, views, likes, and dislikes from user provided videos</li>
+        <br />
+        <li><code>Functions</code> to store data based on user written python functions</li>
+        <br />
+        <li>
+          Easily <b>export data</b> as <b>text, .csv, .xls, .pdf</b> via the <b>Copy, Print, CSV, Excel, and PDF</b> 
+          buttons on any page where data is presented in a table
+          <br />
+          &nbsp;&nbsp;<small><em>note: these were only tested in the Chrome browser</em>, and probably require 
+          the Adobe Flash plug-in to be installed for other browsers</small>
+        </li>
+        <br />
+        <li>
+          <b>Background job scheduling</b> to regularly gather data for 
+          social counters, youtube channels, user functions, and crawlers
+        </li>
+        <br />
+        <li>
+          <small>
+            <a href="javascript:void();" class="btn btn-xs btn-warning" title="wishful thinking while on vacation">ToDo's:</a>
+            <ul>
+              <li>Try to stay in sync while learning about SEO from the <a href="https://github.com/miklevin/pipulate" target="_blank">Pipulate</a> project, <code>the inspiration for this project</code></li>
+              <li>At this time, <code>login/logout</code> are not enforced, but it's coded/tested and only needs to be uncommented, then again, maybe this is not needed as the app seems best used as a single user tool</li>
+              <li>
+                Fix the javascript/AJAX <code>infinite scrolling</code> issue, i.e. scraping the YouTube videos list page 
+                is currently limited to 30, maybe use RSS feed, Scrapy, PhantomJS, or Selenium (too complex?)
+              </li>
+              <li>
+                Allow the import of data as a CSV file upload, maybe not, as this could be done with Logstash or a simple python script, 
+                and avoid the maintenance mess of uploading files
+              </li>
+            </ul>
+          </small>
+        </li>
+      </ul>
+    </big>
+    <hr />
+    <small>
+      Hello, {{ip}}
+      <br />
+      <em>
+        &nbsp;&nbsp;Go to <a href="https://github.com/cleesmith/escalate" target="_blank">Escalate</a> to download a copy of this app.
+      </em>
+      <br />
+      <em>
+        &nbsp;&nbsp;Feel free to send questions/suggestions via a new issue at
+        <a href="https://github.com/cleesmith/escalate" target="_blank">Escalate</a>.
+      </em>
+    </small>
+  </p>
+</div>
+<div class="clearfix"></div>
+
+{% endblock %}

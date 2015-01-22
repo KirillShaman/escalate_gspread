@@ -1,0 +1,6 @@
+clear
+# use this for dev/test, as waitress doesn't reload changed code:
+python manage.py runserver
+
+# but this does better at threads, as the above can hang however it does finish after a long wait:
+# python manage.py waitress_please

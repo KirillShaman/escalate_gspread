@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3 class="pull-left">json2table</h3>
+  <div class="clearfix"></div>
+</div>
+
+<!-- easy way to dump a elasticsearch document -->
+{{atable | safe}}
+
+{% endblock %}

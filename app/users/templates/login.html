@@ -1,0 +1,13 @@
+{% extends "base_log_in_out.html" %}
+{% block content %}
+
+<form class="form-signin" role="form" method="post" action="">
+  <h4 class="form-signin-heading">Escalate and Google spreadsheets</h4>
+  {{ form.csrf_token }}
+  <input type="text" autofocus="autofocus" placeholder="gmail address" name="username" value="{{request.form.username }}" class="form-control">
+  <br />
+  <input type="password" placeholder="gmail password" name="password" value="{{request.form.password }}" class="form-control">
+  <button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>
+</form>
+
+{% endblock %}

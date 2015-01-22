@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+  <h3 class="pull-left">Crawler</h3>
+  <div class="clearfix"></div>
+</div>
+{% if new_crawler %}
+  <form action="/crawlers_create" method="post" class="form-horizontal" role="form">
+{% else %}
+  <form action="/crawlers_update" method="post" class="form-horizontal" role="form">
+    <input name="id" type="hidden" value="{{id}}" />
+{% endif %}
+  {{ form.csrf_token }}
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">Name</label>
+    <div class="col-sm-10">
+      {{form.name(class="form-control", placeholder="a name is required")}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Runnable</label>
+    <div class="col-sm-6" style="margin-top:5px;">
+      {{form.runnable(default=form.runnable)}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Link</label>
+    <div class="col-sm-10">
+      {{form.gspread_link(default=form.gspread_link, class="form-control", placeholder="copy/paste the link of a Google Spreadsheet, like: https://docs.google.com/spreadsheet/...")}}
+    </div>
+  </div>
+<!-- 
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">Web site URL</label>
+    <div class="col-sm-10">
+      {{form.url(class_="form-control")}}
+    </div>
+  </div>
+ -->
+  <div class="form-group">
+    <label class="col-sm-1 control-label" data-placement="left">&nbsp;</label>
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}
