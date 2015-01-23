@@ -121,80 +121,83 @@ class CrawlerPage(Model):
     ss = gs.gclient.open_by_url(crawler.gspread_link)
     ws = ss.sheet1
     urls = gs.col_one(ws)
+    # only use the first url at A2, as it's probably
+    # best to use a separate spreadsheet for each base url/site:
     url = urls[0]
     # url = 'http://104.236.92.144:8888/' # live demo restriction
     site = Page(url)
     pages = []
-    # try:
-    now_timestamp = datetime.utcnow() # give all pages crawled the same timestamp
-    nrow = 2
-    for cp in site.crawl_and_analyze():
-      # "crawl_and_analyze" is a generator that yields a Page object:
-      pages.append(cp)
-      # gspread update cells in row:
-      acells = ws.range("B%s:Q%s" % (nrow, nrow))
-      acells[0].value = cp.url
-      acells[1].value = cp.title
-      acells[2].value = cp.description
-      acells[3].value = cp.keywords
-      acells[4].value = ''
-      for link in cp.links:
-        acells[4].value += "%s\n" % link
-      acells[5].value = "\n".join(cp.warnings)
-      words = ""
-      for word_count_tuple in cp.wordcount:
-        words += "%s=%s\n" % (word_count_tuple[0], word_count_tuple[1])
-      acells[6].value = words
-      try:
-        acells[7].value = ''
-        suggested_keywords = CrawlerPage.suggestions( "%s %s" % (cp.wordcount[0][0], cp.wordcount[1][0]) )
-        for suggested in suggested_keywords:
-          for k,v in suggested.iteritems():
-            acells[7].value += "%s\n" % v
-      except:
-        acells[7].value = ''
-        pass
-      acells[7].value = acells[7].value.rstrip()
-      try:
-        acells[8].value = ''
-        suggested_keywords = CrawlerPage.suggestions( "%s %s %s" % (cp.wordcount[0][0], cp.wordcount[1][0], cp.wordcount[2][0]) )
-        for suggested in suggested_keywords:
-          for k,v in suggested.iteritems():
-            acells[8].value += "%s\n" % v
-      except:
-        acells[8].value = ''
-        pass
-      acells[9].value = cp.twitter_count
-      acells[10].value = cp.googleplusones
-      acells[11].value = cp.fb_total_count
-      acells[12].value = cp.fb_share_count
-      acells[13].value = cp.fb_like_count
-      acells[14].value = cp.fb_comment_count
-      acells[15].value = cp.fb_click_count
-      ws.update_cells(acells)
-      crawler_page = CrawlerPage.create(
-        name=crawler.name,
-        url=cp.url,
-        sitemap=None,
-        title_tag=cp.title,
-        meta_description=cp.description,
-        meta_keywords=cp.keywords,
-        warnings=','.join(cp.warnings),
-        h1_tag=None,
-        a_tags=cp.links,
-        img_tags=None,
-        plain_text=cp.page_text,
-        word_freqs=pickle.dumps(cp.wordcount),
-        tweets=cp.twitter_count,
-        google_plusses=cp.googleplusones,
-        fb_total=cp.fb_total_count,
-        fb_shares=cp.fb_share_count,
-        fb_likes=cp.fb_like_count,
-        fb_comments=cp.fb_comment_count,
-        fb_clicks=cp.fb_click_count,
-        timestamp=now_timestamp
-      )
-      nrow += 1
-    # except Exception as e:
-    #   print("Error: CrawlerPage:crawl:\n%s" % e)
+    try:
+      now_timestamp = datetime.utcnow() # give all pages crawled the same timestamp
+      # start with row 2 col B for output:
+      nrow = 2
+      for cp in site.crawl_and_analyze():
+        # "crawl_and_analyze" is a generator that yields a Page object:
+        pages.append(cp)
+        # gspread update cells in row:
+        acells = ws.range("B%s:Q%s" % (nrow, nrow))
+        acells[0].value = cp.url
+        acells[1].value = cp.title
+        acells[2].value = cp.description
+        acells[3].value = cp.keywords
+        acells[4].value = ''
+        for link in cp.links:
+          acells[4].value += "%s\n" % link
+        acells[5].value = "\n".join(cp.warnings)
+        words = ""
+        for word_count_tuple in cp.wordcount:
+          words += "%s=%s\n" % (word_count_tuple[0], word_count_tuple[1])
+        acells[6].value = words
+        try:
+          acells[7].value = ''
+          suggested_keywords = CrawlerPage.suggestions( "%s %s" % (cp.wordcount[0][0], cp.wordcount[1][0]) )
+          for suggested in suggested_keywords:
+            for k,v in suggested.iteritems():
+              acells[7].value += "%s\n" % v
+        except:
+          acells[7].value = ''
+          pass
+        acells[7].value = acells[7].value.rstrip()
+        try:
+          acells[8].value = ''
+          suggested_keywords = CrawlerPage.suggestions( "%s %s %s" % (cp.wordcount[0][0], cp.wordcount[1][0], cp.wordcount[2][0]) )
+          for suggested in suggested_keywords:
+            for k,v in suggested.iteritems():
+              acells[8].value += "%s\n" % v
+        except:
+          acells[8].value = ''
+          pass
+        acells[9].value = cp.twitter_count
+        acells[10].value = cp.googleplusones
+        acells[11].value = cp.fb_total_count
+        acells[12].value = cp.fb_share_count
+        acells[13].value = cp.fb_like_count
+        acells[14].value = cp.fb_comment_count
+        acells[15].value = cp.fb_click_count
+        ws.update_cells(acells)
+        crawler_page = CrawlerPage.create(
+          name=crawler.name,
+          url=cp.url,
+          sitemap=None,
+          title_tag=cp.title,
+          meta_description=cp.description,
+          meta_keywords=cp.keywords,
+          warnings=','.join(cp.warnings),
+          h1_tag=None,
+          a_tags=cp.links,
+          img_tags=None,
+          plain_text=cp.page_text,
+          word_freqs=pickle.dumps(cp.wordcount),
+          tweets=cp.twitter_count,
+          google_plusses=cp.googleplusones,
+          fb_total=cp.fb_total_count,
+          fb_shares=cp.fb_share_count,
+          fb_likes=cp.fb_like_count,
+          fb_comments=cp.fb_comment_count,
+          fb_clicks=cp.fb_click_count,
+          timestamp=now_timestamp
+        )
+        nrow += 1
+    except Exception as e:
+      print("Error: CrawlerPage:crawl:\n%s" % e)
     return len(pages)

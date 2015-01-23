@@ -21,7 +21,13 @@
     </li>
   </ul>
 </div>
-<h4>top words by frequency</h4>
+<h4>links</h4>
+<div class="well">
+  {% for href in page.a_tags.split(',') %}
+    {{ href | replace("u'",'') | replace("'",'') | replace("[",'') | replace("]",'') }}<br />
+  {% endfor %}
+</div>
+<h4>top words by frequency obtained from the extracted plain text (shown below)</h4>
 <div class="well">
   {% for word in words %}
     {{word[0]}} = {{word[1]}}<br />

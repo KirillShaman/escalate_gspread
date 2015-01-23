@@ -238,15 +238,16 @@ class Page(object):
       print("\nanalyze: requests.get: error=%s"%e)
       self.warn('analyze: request returned 404: error:\n%s' % e)
       return
-    encoding = page.headers['content-type'].split('charset=')[-1]
-    if encoding not in('text/html', 'text/plain'):
-      try:
-        raw_html = unicode(page.text, encoding)
-      except:
-        self.warn('Can not read {0}'.format(encoding))
-        return
-    else:
-      raw_html = page.text
+    # encoding = page.headers['content-type'].split('charset=')[-1]
+    # if encoding not in('text/html', 'text/plain'):
+    #   try:
+    #     raw_html = unicode(page.text, encoding)
+    #   except:
+    #     self.warn('Can not read {0}'.format(encoding))
+    #     return
+    # else:
+    #   raw_html = page.text
+    raw_html = page.text
     # remove comments, to avoid BeautifulSoup hiccups:
     clean_html = sub(r'<!--.*?-->', r'', raw_html.encode('utf-8'), flags=re.DOTALL)
     soup = BeautifulSoup(clean_html)
