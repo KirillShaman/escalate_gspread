@@ -17,11 +17,13 @@ def async_spider(app, crawler_id):
     crawler.crawled_at = now
     crawler.crawl_status = 'crawling'
     crawler.save()
-    # time.sleep(10) # simulate a lot of crawling
-    pages_len = CrawlerPage.crawl(crawler)
-    crawler.crawl_status = "crawled %s pages" % pages_len
-    crawler.save()
-    print("\tnumber of pages crawled=%s"%pages_len)
+    pages_len = 0
+    try:
+      pages_len = CrawlerPage.crawl(crawler)
+    finally:
+      crawler.crawl_status = "crawled %s pages" % pages_len
+      crawler.save()
+      print("\tnumber of pages crawled=%s"%pages_len)
   print("%s async_spider ended" % datetime.utcnow())
 
 def run_spider(app, crawler_id):
