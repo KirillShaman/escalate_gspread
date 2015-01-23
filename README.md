@@ -193,7 +193,7 @@ cd testing ... start a test web site in background:
 nohup python -m SimpleHTTPServer 8888 &
 cd .. 
 ... start escalate web app in background:
-nohup gunicorn -b 0.0.0.0:80 run:flask_app &
+nohup python manage.py waitress_please &
 ... start job scheduler in background:
 nohup python manage.py jobs &
 ```
