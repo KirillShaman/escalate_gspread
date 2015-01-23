@@ -85,8 +85,6 @@ python
 vi config.py
 ... also, ensure the following are correct:
   DATABASE = 'seo.db'
-  GSPREAD_USER = '???'
-  GSPREAD_PASSWORD = '???'
 
 python manage.py db_create
 
@@ -137,8 +135,6 @@ python
 nano config.py
 ... also, ensure the following are correct:
   DATABASE = 'seo.db'
-  GSPREAD_USER = '???'
-  GSPREAD_PASSWORD = '???'
 
 python manage.py db_create
 python manage.py runserver
@@ -191,8 +187,6 @@ python
 nano config.py
 ... also, ensure the following are correct:
   DATABASE = 'seo.db'
-  GSPREAD_USER = '???'
-  GSPREAD_PASSWORD = '???'
 
 python manage.py db_create
 cd testing ... start a test web site in background:
