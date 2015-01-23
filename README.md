@@ -1,7 +1,7 @@
 # Escalate
 
-> An SEO tool similar to [Pipulate](https://github.com/miklevin/pipulate "Pipulate"), 
-but uses SQLite and Google spreadsheets.
+> A ready-to-use more advanced SEO tool based on ideas from [Pipulate](https://github.com/miklevin/pipulate "Pipulate"), 
+but this python flask app uses both for data storage it uses both SQLite and Google spreadsheets.
 
 > Escalate was designed for use with [Levinux](https://github.com/miklevin/levinux "Levinux")
 or [Tiny Core](http://distro.ibiblio.org/tinycorelinux/ "Tiny Core"), but may be used on any 
