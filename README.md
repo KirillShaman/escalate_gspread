@@ -4,7 +4,7 @@
 but more advanced, and this **python flask** app uses both **SQLite** and **Google spreadsheets** for data storage.
 
 > This app requires you to login with your **Gmail address/password**, which are securely used via https/ssl during your 
-session. Your Gmail address/password are **never stored to disk**, so you can share this app without worrying
+session. Your Gmail address/password are **never stored to disk**, so you can share/distribute this app without worrying
 about your credentials being exposed.
 
 > Escalate was designed for use with [Levinux](https://github.com/miklevin/levinux "Levinux")
