@@ -43,8 +43,9 @@
   $(document).ready(function() {
     $('[data-toggle="confirmation"]').confirmation({
       title:  "WARNING:<br><br>" +
-              "Getting mozscape data involves interacting with several API endpoints which may take some time.<br><br>" +
-              "Usually this is much better performed as a scheduled background job." +
+              "Getting mozscape data interacts with the <b>free</b> Mozscape API endpoint which is very slow.<br><br>" +
+              "Also, limit your get requests to no more than 1 every 10 seconds, otherwise your account may be suspended.<br><br>" +
+              "Usually this is much better performed as a scheduled background job, which can be coded to throttle bulk/batch requests." +
               "<br><br><br>Are you sure?",
       singleton: true,
       popout: true,

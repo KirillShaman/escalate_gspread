@@ -143,7 +143,6 @@ class MozscapeResult(Model):
       acells[9].value = metrics['fmrr']
       acells[10].value = metrics['pda']
       ws.update_cells(acells)
-
       mr = MozscapeResult.create(
           name=mozscape.name,
           url=url,
