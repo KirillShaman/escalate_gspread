@@ -11,5 +11,6 @@ config.py
 /testing/gspread_test.py
 /testing
 /testing_db
+/testing_mozscape_api
 peewee.db
 seo.db

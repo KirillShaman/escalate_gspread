@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
+    $('#counters_table').DataTable({
+      "sDom": 'T<"clearfix">lfrtip',
+      "oTableTools": {
+        "sSwfPath": "static/copy_csv_xls_pdf.swf",
+        "aButtons": [ "copy", "print",
+          {
+            "sExtends": "csv",
+            "sFileName": "escalate_mozscape.csv",
+          },
+          {
+            "sExtends": "xls",
+            "sFileName": "escalate_mozscape.xls",
+            "bFooter": false
+          },
+          {
+            "sExtends": "pdf",
+            "sFileName": "escalate_mozscape.pdf"
+          }
+        ]
+      },
+      "aLengthMenu": [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, "All"]
+      ],
+      // since the list is already sorted descending by timestamp
+      // don't let datatables resort it ascending, but
+      // still allow the user to sort by columns:
+      "aaSorting" : []
+    });
+  });
+</script>
+
+<div class="page-header">
+  <a class="pull-left" href="http://moz.com" title="moz.com" target="_blank">
+    <img src="static/images/powered-by-moz.jpg" alt="Powered by Mozscape" />
+  </a>
+  <div class="clearfix"></div>
+</div>
+<table id="counters_table" class="display table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+  <thead>
+    <tr>
+      <th style="text-align:left">timestamp</th>
+      <th style="text-align:left">url</th>
+      <th style="text-align:right">Domain Authority</th>
+      <th style="text-align:right">Page Authority</th>
+      <th style="text-align:right">MozRank</th>
+      <th style="text-align:right">External Links to URL</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for mr in moz_results %}
+      <tr>
+        <td style="text-align:left; width:12%">{{mr.timestamp}}</td>
+        <td style="text-align:left">
+          <a href="{{mr.url}}" target="_blank">{{mr.url}}</a>
+        </td>
+        <td style="text-align:right">{{mr.pda | format_number}}</td>
+        <td style="text-align:right">{{mr.upa | format_number}}</td>
+        <td style="text-align:right">{{mr.umrp | format_number}}</td>
+        <td style="text-align:right">{{mr.ueid | format_number}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

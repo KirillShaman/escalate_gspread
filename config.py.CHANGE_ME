@@ -11,6 +11,8 @@ class BaseConfig(object):
   # double your cpu's:
   MULTIPROCESSING_POOL_SIZE = 2 # levinux only has 1 cpu
   DATABASE = 'seo.db'
+  MOZSCAPE_API_ACCESS_ID = ''
+  MOZSCAPE_API_SECRET_KEY = ''
 
 class DevelopmentConfig(BaseConfig):
   DEBUG = True

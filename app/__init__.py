@@ -33,7 +33,6 @@ from flask import request, send_from_directory, g
 import jinja2
 from functools import wraps
 from peewee import *
-from app.gspreadsheet import Gspreadsheet
 from werkzeug.contrib.cache import SimpleCache
 from models import GUser
 
@@ -82,6 +81,9 @@ def after_request(response):
   #   pass
   g.db.close()
   return response
+
+from app.mozscape.views import mozscape_blueprint
+flask_app.register_blueprint(mozscape_blueprint)
 
 from app.home.views import home_blueprint
 flask_app.register_blueprint(home_blueprint)
