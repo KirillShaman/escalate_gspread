@@ -198,3 +198,9 @@ class lsapi:
       TargetCols = targetCols,
       SourceCols = sourceCols,
       linkCols   = linkCols)
+
+  def index_metadata(self, command='index_stats'):
+    return self.query('metadata/%s' % command)
+
+  def top_pages(self, url, sort='page_authority', cols=4+2048):
+    return self.query('top-pages/%s' % urllib.quote(url), Sort=sort, Cols=cols)

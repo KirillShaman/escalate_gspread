@@ -29,7 +29,7 @@ from app.users.models import User
 from app.counters.models import SocialCounter, SocialCount
 from app.channels.models import ChannelCounter, Channel
 from app.crawlers.models import Crawler, CrawlerPage
-from app.mozscape.models import Mozscape, MozscapeResult
+from app.mozscape.models import Mozscape, MozscapeResult, MozscapeIndexMetadata
 from app.functions.models import UserFunction, FunctionResult
 from apscheduler.schedulers.blocking import BlockingScheduler
 from jobs import *
@@ -103,6 +103,7 @@ def db_create():
   CrawlerPage.create_table(True)
   Mozscape.create_table(True)
   MozscapeResult.create_table(True)
+  MozscapeIndexMetadata.create_table(True)
   db.close()
 
 # usage:

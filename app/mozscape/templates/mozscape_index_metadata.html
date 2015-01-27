@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="jumbotron" style="background-color:#fff">
+  <a class="pull-left" href="http://moz.com" title="moz.com" target="_blank">
+    <img src="static/images/powered-by-moz.jpg" alt="Powered by Mozscape" />
+  </a>
+  <div class="clearfix"></div>
+  <h3 class="pull-left"><b>Index Metadata</b> for index name: {{mim.index_name}}</h3>
+  <div class="clearfix"></div>
+  <table class="table table-striped table-bordered table-condensed table-hover" cellpadding="0" cellspacing="0" border="0">
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>
+          description
+          &nbsp;&nbsp;
+          <small>see: <a href="http://moz.com/help/guides/moz-api/mozscape/metadata" title="mozscape api" target="_blank">Index Metadata</a></small>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="text-align:right">{{mim.crawl_duration}}</td><td>duration in days of the current index crawl length</td></tr>
+      <tr><td style="text-align:right">{{mim.external_links_per_page}}</td><td>average number of external links per page</td></tr>
+      <tr><td style="text-align:right">{{mim.links_per_page}}</td><td>average number of links per page</td></tr>
+      <tr><td style="text-align:right">{{mim.links | format_number}}</td><td>number of links crawled</td></tr>
+      <tr><td style="text-align:right">{{mim.plds | format_number}}</td><td>number of paid-level domains (root domains)</td></tr>
+      <tr><td style="text-align:right">{{mim.fqdns | format_number}}</td><td>number of fully-qualified domain names (subdomains)</td></tr>
+      <tr><td style="text-align:right">{{mim.nofollow}}%</td><td>percentage of links with a nofollow attribute specified</td></tr>
+      <tr><td style="text-align:right">{{mim.urls | format_number}}</td><td>number of URLs</td></tr>
+      <tr><td style="text-align:right">{{mim.rel_canonical}}%</td><td>percentage of links with a canonical attribute specified</td></tr>
+      <tr><td style="text-align:right">{{mim.locked}}</td><td>locked ?</td></tr>
+      <tr><td style="text-align:right">{{mim.last_update}}</td><td>last update by Mozscape</td></tr>
+      <tr><td style="text-align:right">{{mim.next_update}}</td><td>next update by Mozscape</td></tr>
+      <tr><td style="text-align:right">{{mim.timestamp}}</td><td>timestamp of when this metadata was recorded in the database</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

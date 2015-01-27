@@ -171,3 +171,114 @@ class MozscapeResult(Model):
 
   def __repr__(self):
     return 'id={}, name={}'.format(self.id, self.name)
+
+# ________________________________________________________________________
+
+class Mozscape(Model):
+  name = CharField()
+  runnable = CharField()
+  gspread_link = CharField()
+  urls = CharField(null=True)
+  created_at = DateTimeField(null=True)
+  updated_at = DateTimeField(null=True)
+
+  class Meta:
+    database = db
+    db_table = 'mozscapes'
+
+  def get_id(self):
+    try:
+      return unicode(self.id) # python 2
+    except NameError:
+      return str(self.id) # python 3
+
+  def is_runnable(self):
+    return self.runnable == 'yes'
+
+  def __repr__(self):
+    return 'id={}, name={}'.format(self.id, self.name)
+
+# ________________________________________________________________________
+
+class MozscapeIndexMetadata(Model):
+  index_name = CharField(null=True)
+  crawl_duration = IntegerField(null=True)
+  external_links_per_page = FloatField(null=True)
+  links_per_page = IntegerField(null=True)
+  links = IntegerField(null=True)
+  plds = IntegerField(null=True)
+  fqdns = IntegerField(null=True)
+  nofollow = FloatField(null=True)
+  last_update = DateTimeField(null=True)
+  urls = IntegerField(null=True)
+  locked = BooleanField(null=True)
+  next_update = DateTimeField(null=True)
+  rel_canonical = FloatField(null=True)
+  timestamp = DateTimeField(null=True)
+
+  # see: lsapi.py:
+  # {
+  #   u'index_name': u'140-7',
+  #   u'crawl_duration': 38,
+  #   u'external_links_per_page': 21.24,
+  #   u'links_per_page': 119,
+  #   u'links': 1030960159541,
+  #   u'plds': 192563233,
+  #   u'fqdns': 18618939730,
+  #   u'nofollow': 0.0254,
+  #   u'last_update': 1417694400,
+  #   u'urls': 217064789477,
+  #   u'locked': u'false',
+  #   u'next_update': 1422446400,
+  #   u'rel_canonical': 0.2119
+  # }
+
+  class Meta:
+    database = db
+    db_table = 'mozscape_index'
+
+  @staticmethod
+  def moz_index_metadata():
+    mim = None
+    l = lsapi(flask_app.config['MOZSCAPE_API_ACCESS_ID'], flask_app.config['MOZSCAPE_API_SECRET_KEY'])
+    try:
+      now_timestamp = datetime.utcnow()
+      try:
+        mim = MozscapeIndexMetadata.get(MozscapeIndexMetadata.id==1)
+      except Exception as e:
+        mim = MozscapeIndexMetadata()
+        mim.timestamp = None
+        print("Error: moz_index_metadata: MozscapeIndexMetadata.get(MozscapeIndexMetadata.id==1)\n%s" % e)
+      # do we need to update db or just return mim:
+      if mim.timestamp is None or now_timestamp >= mim.next_update:
+        metrics = l.index_metadata()
+        mim.index_name = metrics['index_name']
+        mim.crawl_duration = metrics['crawl_duration']
+        mim.external_links_per_page = metrics['external_links_per_page']
+        mim.links_per_page = metrics['links_per_page']
+        mim.links = metrics['links']
+        mim.plds = metrics['plds']
+        mim.fqdns = metrics['fqdns']
+        mim.nofollow = metrics['nofollow']
+        mim.urls = metrics['urls']
+        if str(metrics['locked']) == 'false':
+          mim.locked = False
+        else:
+          mim.locked = True
+        mim.rel_canonical = metrics['rel_canonical']
+        mim.last_update = datetime.fromtimestamp(metrics['last_update'])
+        mim.next_update = datetime.fromtimestamp(metrics['next_update'])
+        mim.timestamp = now_timestamp
+        mim.save() # create or update
+    except Exception as e:
+      print("Error: moz_index_metadata:\n%s" % e)
+    return mim
+
+  def get_id(self):
+    try:
+      return unicode(self.id) # python 2
+    except NameError:
+      return str(self.id) # python 3
+
+  def __repr__(self):
+    return 'id={}, name={}'.format(self.id, self.name)

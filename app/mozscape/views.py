@@ -27,7 +27,7 @@ from flask.ext.login import login_required
 from flask.ext.login import current_user
 # from jinja2 import Environment
 import jinja2
-from app.mozscape.models import Mozscape, MozscapeResult
+from app.mozscape.models import Mozscape, MozscapeResult, MozscapeIndexMetadata
 from forms import MozscapeForm
 import requests
 import StringIO
@@ -142,3 +142,9 @@ def mozscapes_update():
 def mozscapes_list():
   mozs = Mozscape.select()
   return render_template('mozscapes_list.html', current_user=current_user, mozs=mozs)
+
+@mozscape_blueprint.route('/mozscape_index')
+@login_required
+def mozscape_index():
+  mim = MozscapeIndexMetadata.moz_index_metadata()
+  return render_template('mozscape_index_metadata.html', current_user=current_user, mim=mim)
